@@ -1,36 +1,25 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-
-import { Model } from 'mongoose';
 import { User } from '../models/user.model';
-import { CreateUserDto } from '../dto/create.user.dto';
 
 @Injectable()
 export class UserService {
 
-  constructor(
-    @InjectModel('User') private userModel: Model<User>
-  ) { }
+  private users: User[] = [];
 
-  async singin(createUserDto: CreateUserDto): Promise<User> {
-    const isUserCreated = await this.userModel.findOne({
-      user: createUserDto.user,
-      password: createUserDto.password
-    });
+  singin(createUuser: User): User {
+    const isUserCreated = this.users
+      .find(user => user.user === createUuser.user && user.password === createUuser.password);
 
     if (isUserCreated) {
       return isUserCreated;
     }
 
-    const createdCat = new this.userModel(createUserDto);
-    return createdCat.save();
+    this.users.push(createUuser);
   }
 
-  async login(user: User): Promise<User> {
-    const userRecord = await this.userModel.findOne({
-      user: user.user,
-      password: user.password
-    });
+  login(createUuser: User): User {
+    const userRecord = this.users
+      .find(user => user.user === createUuser.user && user.password === createUuser.password);
 
     Logger.debug(userRecord, 'Loggin service');
 

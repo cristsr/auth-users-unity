@@ -5,7 +5,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ConfigModuleOptions } from '@nestjs/config/dist/interfaces';
 import configuration from './config/configuration';
 import { Configuration } from './config/config.keys';
-import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './modules/users/users.module';
 
 const config = (() => {
@@ -24,7 +23,6 @@ const config = (() => {
 @Module({
   imports: [
     ConfigModule.forRoot(config),
-    DatabaseModule,
     UsersModule,
   ],
   controllers: [AppController],
