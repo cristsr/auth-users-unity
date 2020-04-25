@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { User } from '../models/user.model';
 
 @Injectable()
@@ -6,22 +6,25 @@ export class UserService {
 
   private users: User[] = [];
 
-  singin(createUuser: User): User {
+  singin(createUser: User): User {
     const isUserCreated = this.users
-      .find(user => user.user === createUuser.user && user.password === createUuser.password);
+      .find(user => user.user === createUser.user && user.password === createUser.password);
 
-    if (isUserCreated) {
-      return isUserCreated;
+    if (!isUserCreated) {
+      this.users.push(createUser);
+      return createUser;
     }
 
-    this.users.push(createUuser);
-
-    return createUuser;
+    throw new UnprocessableEntityException({
+      statusCode: 422,
+      message: "User registered",
+      error: "Unprocessable Entity",
+    })
   }
 
-  login(createUuser: User): User {
+  login(createUser: User): User {
     const userRecord = this.users
-      .find(user => user.user === createUuser.user && user.password === createUuser.password);
+      .find(user => user.user === createUser.user && user.password === createUser.password);
 
     Logger.debug(userRecord, 'Loggin service');
 
