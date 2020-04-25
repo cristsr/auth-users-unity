@@ -1,4 +1,4 @@
-import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
@@ -19,8 +19,10 @@ export class UserService {
     });
 
     if (isUserCreated) {
-      return isUserCreated;
+      throw new UnprocessableEntityException('User is already registered');
     }
+
+    Logger.debug(createUserDto, 'UserService.sining');
 
     const createdCat = new this.userModel(createUserDto);
     return createdCat.save();
@@ -32,11 +34,11 @@ export class UserService {
       password: user.password
     });
 
-    Logger.debug(userRecord, 'Loggin service');
-
     if (!userRecord) {
       throw new NotFoundException('user not found')
     }
+
+    Logger.debug(userRecord, 'UsersService.login');
 
     return userRecord;
   }

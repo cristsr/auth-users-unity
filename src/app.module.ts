@@ -3,22 +3,21 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ConfigModuleOptions } from '@nestjs/config/dist/interfaces';
-import configuration from './config/configuration';
-import { Configuration } from './config/config.keys';
+import { Configuration } from './config.keys';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './modules/users/users.module';
+import { configuration } from './configuration';
 
 const config = (() => {
-  Logger.debug('Init config', 'Config');
-  // return {
-  //   envFilePath: '.env',
-  //   isGlobal: true,
-  // } as ConfigModuleOptions
-
   return {
-    load: [configuration],
-    isGlobal: true
-  } as ConfigModuleOptions
+    envFilePath: '.env',
+    isGlobal: true,
+  } as ConfigModuleOptions;
+
+  // return {
+  //   load: [configuration],
+  //   isGlobal: true
+  // } as ConfigModuleOptions
 })();
 
 @Module({
@@ -31,7 +30,7 @@ const config = (() => {
   providers: [AppService],
 })
 export class AppModule {
-  static port: number;
+  public static port: number;
 
   constructor(private config: ConfigService) {
     AppModule.port = this.config.get(Configuration.PORT);
