@@ -15,6 +15,8 @@ export class UserService {
     }
 
     this.users.push(createUuser);
+
+    return createUuser;
   }
 
   login(createUuser: User): User {
