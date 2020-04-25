@@ -11,7 +11,7 @@ export const databaseProvider = [
     imports: [ConfigService],
     inject: [ConfigService],
     async useFactory(config: ConfigService) {
-      Logger.debug(databaseUri, 'Db Uri');
+      Logger.log(databaseUri, 'Db Uri');
       return {
         uri: config.get(databaseUri),
         useFindAndModify: false,
