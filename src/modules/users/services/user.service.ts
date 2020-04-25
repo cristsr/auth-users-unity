@@ -12,7 +12,7 @@ export class UserService {
     @InjectModel('User') private userModel: Model<User>
   ) { }
 
-  async singin(createUserDto: CreateUserDto): Promise<User> {
+  async singUp(createUserDto: CreateUserDto): Promise<User> {
     const isUserCreated = await this.userModel.findOne({
       user: createUserDto.user,
       password: createUserDto.password
@@ -22,13 +22,13 @@ export class UserService {
       throw new UnprocessableEntityException('User is already registered');
     }
 
-    Logger.debug(createUserDto, 'UserService.sining');
+    Logger.debug(createUserDto, 'UserService.singUp');
 
     const createdCat = new this.userModel(createUserDto);
     return createdCat.save();
   }
 
-  async login(user: User): Promise<User> {
+  async logIn(user: User): Promise<User> {
     const userRecord = await this.userModel.findOne({
       user: user.user,
       password: user.password
@@ -38,7 +38,7 @@ export class UserService {
       throw new NotFoundException('user not found')
     }
 
-    Logger.debug(userRecord, 'UsersService.login');
+    Logger.debug(userRecord, 'UserService.logIn');
 
     return userRecord;
   }

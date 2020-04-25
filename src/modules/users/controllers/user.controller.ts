@@ -7,14 +7,14 @@ import { User } from '../models/user.model';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post('/singin')
-  singin(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return this.userService.singin(createUserDto);
+  @Post('/singup')
+  singUp(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return this.userService.singUp(createUserDto);
   }
 
   @Post('/login')
-  login(@Body() user: User): Promise<User> {
-    return this.userService.login(user)
+  logIn(@Body() user: User): Promise<User> {
+    return this.userService.logIn(user)
   }
   
 }
