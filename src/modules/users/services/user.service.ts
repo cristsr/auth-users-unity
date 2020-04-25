@@ -15,11 +15,7 @@ export class UserService {
       return createUser;
     }
 
-    throw new UnprocessableEntityException({
-      statusCode: 422,
-      message: "User registered",
-      error: "Unprocessable Entity",
-    })
+    throw new UnprocessableEntityException('User has been registered')
   }
 
   login(createUser: User): User {
